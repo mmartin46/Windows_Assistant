@@ -4,17 +4,40 @@
 #include "robot.h"
 
 
+/*
+User
+The user is responsible for sending requests to the robot
+and changing their own credientials.
+
+@set_username - Sets the username 
+@set_password - Sets the password
+*/
 class User
 {
    private:
       uint8_t acc_init;
+      uint8_t turn;
       std::pair<std::string, std::string> auth;
    public:
-      User() { acc_init = 0; }
+      User() { acc_init = 0; turn = 0; }
       virtual void set_username(const std::string &);
       virtual void set_password(const std::string &);
+      std::string send_request();
+
+      void set_turn(uint8_t);
+      uint8_t get_turn();
 };
 
+// Send request
+std::string User::send_request()
+{
+   std::string request;
+   getline(std::cin, request);
+   
+   std::cout << "\t\t" << request << endl;
+}
+
+// Sets the username
 void User::set_username(const std::string &usr)
 {
    std::string input;
@@ -37,6 +60,7 @@ void User::set_username(const std::string &usr)
    }
 }
 
+// Sets the password
 void User::set_password(const std::string &pass)
 {
    std::string input;
@@ -66,6 +90,15 @@ void User::set_password(const std::string &pass)
    }
 }
 
+void User::set_turn(uint8_t t)
+{
+   turn = t;
+}
+
+uint8_t User::get_turn()
+{
+   return turn;
+}
 
 int main()
 { 
@@ -96,7 +129,7 @@ int main()
    {
         ai.printGreeting();
         ai.set_turn(1);
-        getline(std::cin, response);
+        response = usr.send_request();
         std::cout << ai.evaluate_response(response) << std::endl;
         ai.set_turn(0);
    }
