@@ -10,6 +10,7 @@ class User
       uint8_t acc_init;
       std::pair<std::string, std::string> auth;
    public:
+      User() { acc_init = 0; }
       virtual void set_username(const std::string &);
       virtual void set_password(const std::string &);
 };
@@ -65,38 +66,21 @@ void User::set_password(const std::string &pass)
    }
 }
 
-class RootUser : public User
-{
-   private:
-      uint8_t acc_init;
-      std::pair<std::string, std::string> auth;
-   public: 
-      void set_username(const std::string &);
-      void set_password(const std::string &);
-};
-
-void RootUser::set_username(const std::string &usr)
-{
-   auth.first = usr;
-}
-
-void RootUser::set_password(const std::string &pass)
-{
-   auth.first = pass;
-}
 
 int main()
 { 
+   // Initialization
    Game game;
    Robot ai;
    User usr;
 
+   // User Credientials
    std::string usrn;
    std::string pssc;
 
    std::string response;
 
-   // User Credentials
+   // User Login
    std::cout << "Username: ";
    getline(std::cin, usrn);
    usr.set_username(usrn);
@@ -104,6 +88,8 @@ int main()
    getline(std::cin, pssc);
    usr.set_password(pssc);
 
+
+   // Game start
    std::cout << "********* This is the AI Program **********" << std::endl;
 
    while (game.status())
