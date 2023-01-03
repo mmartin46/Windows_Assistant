@@ -1,4 +1,3 @@
-// Online C++ compiler to run C++ program online
 // Matthew 5:27
 #include "game.h"
 #include "robot.h"
