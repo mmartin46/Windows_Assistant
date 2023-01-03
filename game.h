@@ -2,6 +2,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+// Runs the game.
 class Game
 {
     private:
