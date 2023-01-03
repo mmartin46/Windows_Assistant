@@ -13,6 +13,9 @@ class Robot
 
         std::vector<std::string> greeting_responses = { "Hi", "Hey", "What's up?", "Hey there!", "Yo!" };
         std::vector<std::string> quest_greet_responses = { "I'm a robot, how are you?", "Nothing much, what about you?", "I'm running, how about you?", "I'm running", "I'm a program." };
+        
+        std::vector<std::string> positive_answer = { "Nice.", "Cool.", "Awesome!", "Great!" };
+
     public:
         Robot();
         void set_turn(uint8_t);
@@ -47,6 +50,11 @@ std::string Robot::evaluate_response(const std::string &response)
       std::vector<std::string> possible_greet_resp =
       {
          "howareyou", "howhaveyoubeen","whatsnew","whatsup","whatsgoingon"
+      };
+
+      std::vector<std::string> positive_response =
+      {
+         "alright", "fine", "good", "solid", "well"
       };
 
        rand_idx = rand() % 5 + 0;
@@ -87,6 +95,17 @@ std::string Robot::evaluate_response(const std::string &response)
             result = quest_greet_responses[rand_idx];
          }
        }
+
+       end = positive_response.end();
+
+       for (start = positive_response.begin(); start < end; ++start)
+       {
+         if (copy.find(*start) != std::string::npos)
+         {
+            result = positive_answer[rand_idx];
+         }
+       }
+
        return result;
     }
 }
