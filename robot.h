@@ -39,24 +39,24 @@ std::string Robot::evaluate_response(const std::string &response)
     {
        int rand_idx;
        srand (time(NULL));
-       std::vector<std::string> possible_greetings = 
+       std::vector<std::string> possible_greetings =
        {
           "hey", "hi", "hii", "hello", "heyy"
        };
-      
+
       std::vector<std::string> possible_greet_resp =
       {
-         "how are you", "how have you been","whats new","whats up","whats going on"
+         "howareyou", "howhaveyoubeen","whatsnew","whatsup","whatsgoingon"
       };
-    
+
        rand_idx = rand() % 5 + 0;
-    
+
        // Remove all punctuation, spaces, and convert each character to lowercase.
        std::string result = "I don't understand.";
        std::string copy = response;
        // Lowercase
        std::transform(copy.begin(), copy.end(), copy.begin(), [](unsigned char ch) { return std::tolower(ch); });
-       
+
 
        // Removes punctuation
        for (int i = 0; i < copy.size(); ++i)
@@ -68,9 +68,6 @@ std::string Robot::evaluate_response(const std::string &response)
          }
        }
 
-       // Removes any whitespaces
-       std::cout << copy << std::endl;
-    
       std::vector<std::string>::const_iterator start, end = possible_greetings.end();
        // If the result is a greeting.
        for (start = possible_greetings.begin(); start < end; ++start)
@@ -80,7 +77,7 @@ std::string Robot::evaluate_response(const std::string &response)
              result = greeting_responses[rand_idx];
           }
        }
-       
+
        end = possible_greet_resp.end();
 
        for (start = possible_greet_resp.begin(); start < end; ++start)

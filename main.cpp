@@ -9,7 +9,7 @@ User
 The user is responsible for sending requests to the robot
 and changing their own credientials.
 
-@set_username - Sets the username 
+@set_username - Sets the username
 @set_password - Sets the password
 */
 class User
@@ -33,8 +33,7 @@ std::string User::send_request()
 {
    std::string request;
    getline(std::cin, request);
-   
-   std::cout << "\t\t" << request << endl;
+   return request;
 }
 
 // Sets the username
@@ -51,7 +50,7 @@ void User::set_username(const std::string &usr)
       getline(std::cin, input);
       if (input == auth.second)
       {
-         auth.first = usr;         
+         auth.first = usr;
       }
       else
       {
@@ -78,9 +77,9 @@ void User::set_password(const std::string &pass)
          getline(std::cin, input);
          if (input == auth.second)
          {
-            auth.second = pass;  
+            auth.second = pass;
             wrong = 0;
-            std::cout << "Correct password.\n";       
+            std::cout << "Correct password.\n";
          }
          else
          {
@@ -101,7 +100,7 @@ uint8_t User::get_turn()
 }
 
 int main()
-{ 
+{
    // Initialization
    Game game;
    Robot ai;
