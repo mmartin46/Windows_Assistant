@@ -11,10 +11,10 @@ class Robot
         uint8_t greet_sent;
         uint8_t turn;
 
-        std::vector<std::string> greeting_responses = { "Hi", "Hey", "What's up?", "Hey there!", "Yo!" };
+        std::vector<std::string> greeting_responses = { "Hi", "Hey", "What's up?", "Hey there!", "Yo!", "Hi!" };
         std::vector<std::string> quest_greet_responses = { "I'm a robot, how are you?", "Nothing much, what about you?", "I'm running, how about you?", "I'm running", "I'm a program." };
-        
-        std::vector<std::string> positive_answer = { "Nice.", "Cool.", "Awesome!", "Great!" };
+
+        std::vector<std::string> positive_response = { "Nice.", "Cool.", "Awesome!", "Great!", "Neat!" };
 
     public:
         Robot();
@@ -22,6 +22,7 @@ class Robot
         uint8_t get_turn();
         void printGreeting();
         bool check_greeting();
+        void generate(std::vector<std::string>, std::vector<std::string>, std::string &, std::string, int);
         std::string evaluate_response(const std::string &);
 
 };
@@ -36,25 +37,38 @@ uint8_t Robot::get_turn()
     return turn;
 }
 
+void Robot::generate(std::vector<std::string> ans, std::vector<std::string> resp, std::string &result, std::string copy, int rand_idx)
+{
+   std::vector<std::string>::const_iterator start, end = ans.end();
+   // If the result is a greeting.
+   for (start = ans.begin(); start < end; ++start)
+   {
+      if (copy.find(*start) != std::string::npos)
+      {
+         result = resp[rand_idx];
+      }
+   }   
+}
+
 std::string Robot::evaluate_response(const std::string &response)
 {
     if (get_turn())
     {
        int rand_idx;
        srand (time(NULL));
-       std::vector<std::string> possible_greetings =
+       std::vector<std::string> greeting_answer =
        {
-          "hey", "hi", "hii", "hello", "heyy"
+          "hey", "hi", "hii", "hello", "heyy", "heythere"
        };
 
-      std::vector<std::string> possible_greet_resp =
+      std::vector<std::string> greet_resp_answer =
       {
-         "howareyou", "howhaveyoubeen","whatsnew","whatsup","whatsgoingon"
+         "howareyou", "howhaveyoubeen","whatsnew","whatsup","whatsgoingon", "howsitgoing"
       };
 
-      std::vector<std::string> positive_response =
+      std::vector<std::string> positive_answer =
       {
-         "alright", "fine", "good", "solid", "well"
+         "alright", "fine", "good", "solid", "well", "decent"
       };
 
        rand_idx = rand() % 5 + 0;
@@ -76,9 +90,9 @@ std::string Robot::evaluate_response(const std::string &response)
          }
        }
 
-      std::vector<std::string>::const_iterator start, end = possible_greetings.end();
+      std::vector<std::string>::const_iterator start, end = greeting_answer.end();
        // If the result is a greeting.
-       for (start = possible_greetings.begin(); start < end; ++start)
+       for (start = greeting_answer.begin(); start < end; ++start)
        {
           if (copy.find(*start) != std::string::npos)
           {
@@ -86,9 +100,9 @@ std::string Robot::evaluate_response(const std::string &response)
           }
        }
 
-       end = possible_greet_resp.end();
+       end = greet_resp_answer.end();
 
-       for (start = possible_greet_resp.begin(); start < end; ++start)
+       for (start = greet_resp_answer.begin(); start < end; ++start)
        {
          if (copy.find(*start) != std::string::npos)
          {
@@ -96,15 +110,19 @@ std::string Robot::evaluate_response(const std::string &response)
          }
        }
 
-       end = positive_response.end();
+       end = positive_answer.end();
 
-       for (start = positive_response.begin(); start < end; ++start)
+       for (start = positive_answer.begin(); start < end; ++start)
        {
          if (copy.find(*start) != std::string::npos)
          {
-            result = positive_answer[rand_idx];
+            result = positive_response[rand_idx];
          }
        }
+
+       generate(greeting_answer, greeting_responses, result, copy, rand_idx);
+       generate(greet_resp_answer, quest_greet_responses, result, copy, rand_idx);
+       generate(positive_answer, positive_response, result, copy, rand_idx);
 
        return result;
     }
