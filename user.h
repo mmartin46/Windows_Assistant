@@ -13,7 +13,7 @@ and changing their own credientials.
 */
 class User
 {
-   private:
+   protected:
       uint8_t acc_init;
       uint8_t turn;
       std::pair<std::string, std::string> auth;
@@ -103,5 +103,24 @@ User::~User()
 {
    std::cout << "Logging out of account '" + auth.first + "'..." << std::endl;
 }
+
+// Creates a root user
+// class RootUser : public User
+// {
+//    public:
+//       void root_init();
+//       ~RootUser();
+// }
+
+// RootUser::root_init()
+// {
+//    std::cout << "Root user initialized for '" + auth.first + "'" << std::endl;
+//    std::cout << "********** ROOT MODE ************" << std::endl; 
+// }
+
+// RootUser::~RootUser()
+// {
+//    std::cout << "(ROOT) Logging out of account '" + auth.first + "'..." << std::endl;
+// }
 
 #endif

@@ -3,6 +3,7 @@
 #define ROBOT_H
 
 #include "libraries.cpp"
+#include "user.h"
 
 
 class Robot
@@ -10,6 +11,8 @@ class Robot
     private:
         uint8_t greet_sent;
         uint8_t turn;
+
+
         // Greeting
         std::vector<std::string> greeting_responses = { "Hi", "Hey", "What's up?", "Hey there!", "Yo!", "Hi!" };
         std::vector<std::string> quest_greet_responses = { "I'm a robot, how are you?", "Nothing much, what about you?", "I'm running, how about you?", "I'm running", "I'm a program." };
@@ -17,6 +20,8 @@ class Robot
         // POSITIVE
         std::vector<std::string> positive_response = { "Nice.", "Cool.", "Awesome!", "Great!", "Neat!" };
 
+        // Setting
+        std::vector<std::string> settings = { "root" };
     public:
         Robot();
         void set_turn(uint8_t);
@@ -25,8 +30,28 @@ class Robot
         bool check_greeting() const;
         void generate(const std::vector<std::string> &, const std::vector<std::string> &, std::string &, std::string, int);
         void terminal_response(const std::string &, std::string &);
+        void setting_response(std::string &, std::string &);
+
         std::string evaluate_response(const std::string &);
 };
+
+// Checks if the user has requested to configure
+// any user settings.
+void Robot::setting_response(std::string &result, std::string &copy)
+{
+   std::string usrnme;
+   std::string passwd;
+   for (auto it : settings )
+   {
+      if (copy.find(it) != std::string::npos)
+      {
+         if (it == "root")
+         {
+            result = "Root Login";
+         }
+      }
+   }
+}
 
 // Sets the robot's turn to respond on or off.
 // 0 - Not the robot's turn
@@ -58,7 +83,7 @@ void Robot::generate(const std::vector<std::string> &ans, const std::vector<std:
       {
          result = resp[rand_idx];
       }
-   }   
+   }
 }
 
 // If the user wants to use commands using
@@ -134,7 +159,7 @@ std::string Robot::evaluate_response(const std::string &response)
          "alright", "fine", "good", "yeah", "great", "yes"
       };
 
-      
+
        rand_idx = rand() % 5 + 0;
 
        // Remove all punctuation, spaces, and convert each character to lowercase.
@@ -153,8 +178,9 @@ std::string Robot::evaluate_response(const std::string &response)
             i--;
          }
        }
-       
+
        // Todo Later: Refactor
+       this->setting_response(result, copy);
        this->terminal_response(response, result);
        this->generate(greeting_answer, greeting_responses, result, copy, rand_idx);
        this->generate(greet_resp_answer, quest_greet_responses, result, copy, rand_idx);
