@@ -24,20 +24,30 @@ class Robot
         void printGreeting();
         bool check_greeting();
         void generate(const std::vector<std::string> &, const std::vector<std::string> &, std::string &, std::string, int);
-        void single_response(const std::string &, std::string &);
+        void terminal_response(const std::string &, std::string &);
         std::string evaluate_response(const std::string &);
 };
 
+// Sets the robot's turn to respond on or off.
+// 0 - Not the robot's turn
+// 1 - The robot's turn
 void Robot::set_turn(uint8_t num)
 {
    turn = num;
 }
 
+// Checks if it is the robot's current turn.
+// 0 - Not the robot's turn
+// 1 - The robot's turn
 uint8_t Robot::get_turn()
 {
     return turn;
 }
 
+// Generates a general response to
+// a general answer.
+// ans - A vector of strings that holds the possible user's requests.
+// res - A vector of strings that holds the possible bot resposnes.
 void Robot::generate(const std::vector<std::string> &ans, const std::vector<std::string> &resp, std::string &result, std::string copy, int rand_idx)
 {
    std::vector<std::string>::const_iterator start, end = ans.end();
@@ -51,21 +61,34 @@ void Robot::generate(const std::vector<std::string> &ans, const std::vector<std:
    }   
 }
 
-void Robot::single_response(const std::string &response, std::string &result)
+// If the user wants to use commands using
+// the terminal command prompt the
+// terminal_response() function will be called.
+void Robot::terminal_response(const std::string &response, std::string &result)
 {
 
-
+   // Application Management
    std::unordered_map<std::string, const char *> application_map = {
        {"chrome", "start chrome"},
        {"edge", "start msedge"},
-       {"task", "taskmgr"}
+       {"task", "taskmgr"},
+       {"explore", "explorer"},
+       {"calculator", "calc"}
    };
 
+   // File Management
    std::unordered_map<std::string, const char *> file_map = {
        {"files", "ls"},
-       {"back", "cd .."}
+       {"back", "cd .."},
+       {"where", "pwd"},
+       {"text", "find . -type f -name '*.txt'"},
+       {"cpp", "find . -type f -name '*.cpp'"},
+       {"processes", "ps"},
+       {"environment", "printenv"}
    };
 
+   // Checks if the maps contain a key which is
+   // also contained in the response.
    for (auto it : application_map)
    {
       if (response.find(it.first) != std::string::npos)
@@ -86,12 +109,17 @@ void Robot::single_response(const std::string &response, std::string &result)
    }
 }
 
+// Evaluates the user's response and returns
+// a string based off what the user requested.
 std::string Robot::evaluate_response(const std::string &response)
 {
     if (get_turn())
     {
+      // Generating a Random Number
        int rand_idx;
        srand (time(NULL));
+
+       // General Greetings
        std::vector<std::string> greeting_answer =
        {
           "hey", "hi", "hii", "hello", "heyy", "heythere"
@@ -107,6 +135,7 @@ std::string Robot::evaluate_response(const std::string &response)
          "alright", "fine", "good", "yeah", "great", "yes"
       };
 
+      
        rand_idx = rand() % 5 + 0;
 
        // Remove all punctuation, spaces, and convert each character to lowercase.
@@ -126,7 +155,8 @@ std::string Robot::evaluate_response(const std::string &response)
          }
        }
        
-       single_response(response, result);
+       // Todo Later: Refactor
+       terminal_response(response, result);
        generate(greeting_answer, greeting_responses, result, copy, rand_idx);
        generate(greet_resp_answer, quest_greet_responses, result, copy, rand_idx);
        generate(positive_answer, positive_response, result, copy, rand_idx);
@@ -142,6 +172,8 @@ Robot::Robot()
    greet_sent = 0;
 }
 
+// Checks if a greeting has already
+// been sent.
 bool Robot::check_greeting()
 {
    if (greet_sent)
