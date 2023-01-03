@@ -19,6 +19,7 @@ class User
       std::pair<std::string, std::string> auth;
    public:
       User() { acc_init = 0; turn = 0; }
+      virtual ~User();
       virtual void set_username(const std::string &);
       virtual void set_password(const std::string &);
       std::string send_request();
@@ -96,6 +97,11 @@ void User::set_turn(uint8_t t)
 uint8_t User::get_turn() const
 {
    return turn;
+}
+
+User::~User()
+{
+   std::cout << "Logging out of account '" + auth.first + "'..." << std::endl;
 }
 
 #endif

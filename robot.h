@@ -79,7 +79,6 @@ void Robot::terminal_response(const std::string &response, std::string &result)
    // File Management
    std::unordered_map<std::string, const char *> file_map = {
        {"files", "ls"},
-       {"back", "cd .."},
        {"where", "pwd"},
        {"text", "find . -type f -name '*.txt'"},
        {"cpp", "find . -type f -name '*.cpp'"},
@@ -113,7 +112,7 @@ void Robot::terminal_response(const std::string &response, std::string &result)
 // a string based off what the user requested.
 std::string Robot::evaluate_response(const std::string &response)
 {
-    if (get_turn())
+    if (this->get_turn())
     {
       // Generating a Random Number
        int rand_idx;
@@ -156,10 +155,10 @@ std::string Robot::evaluate_response(const std::string &response)
        }
        
        // Todo Later: Refactor
-       terminal_response(response, result);
-       generate(greeting_answer, greeting_responses, result, copy, rand_idx);
-       generate(greet_resp_answer, quest_greet_responses, result, copy, rand_idx);
-       generate(positive_answer, positive_response, result, copy, rand_idx);
+       this->terminal_response(response, result);
+       this->generate(greeting_answer, greeting_responses, result, copy, rand_idx);
+       this->generate(greet_resp_answer, quest_greet_responses, result, copy, rand_idx);
+       this->generate(positive_answer, positive_response, result, copy, rand_idx);
 
        return result;
     }

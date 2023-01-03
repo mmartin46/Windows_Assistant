@@ -30,7 +30,7 @@ int main()
    std::cout << "********* This is the AI Program **********" << std::endl;
 
    // Game loop
-   while (game.status())
+   while (game.get_status())
    {
         ai.printGreeting();
         ai.set_turn(1);
@@ -38,6 +38,9 @@ int main()
         std::cout << ai.evaluate_response(response) << std::endl;
         ai.set_turn(0);
    }
+
+   // Game End
+   std::cout << "********* Ending the AI Program **********" << std::endl;
 
    return 0;
 }

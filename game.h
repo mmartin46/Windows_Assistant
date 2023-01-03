@@ -2,6 +2,9 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "libraries.cpp"
+
+
 // Runs the game.
 class Game
 {
@@ -10,11 +13,19 @@ class Game
     
     public:
         Game();
-        bool status() const;
+        virtual ~Game();
+        void set_status(uint8_t);
+        bool get_status() const;
 };
 
+// Sets the current game status.
+void Game::set_status(uint8_t t)
+{
+    run = t;
+}
+
 // Checks if the game is running.
-bool Game::status() const
+bool Game::get_status() const
 {
     if (run)
     {
@@ -30,5 +41,9 @@ Game::Game()
     run = 0;
 }
 
+Game::~Game()
+{
+    run = 0;
+}
 
 #endif
