@@ -10,11 +10,11 @@ class Game
     
     public:
         Game();
-        bool status();
+        bool status() const;
 };
 
 // Checks if the game is running.
-bool Game::status()
+bool Game::status() const
 {
     if (run)
     {

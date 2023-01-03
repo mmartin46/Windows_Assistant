@@ -24,7 +24,7 @@ class User
       std::string send_request();
 
       void set_turn(uint8_t);
-      uint8_t get_turn();
+      uint8_t get_turn() const;
 };
 
 // Send request
@@ -93,7 +93,7 @@ void User::set_turn(uint8_t t)
    turn = t;
 }
 
-uint8_t User::get_turn()
+uint8_t User::get_turn() const
 {
    return turn;
 }

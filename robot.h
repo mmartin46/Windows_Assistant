@@ -20,9 +20,9 @@ class Robot
     public:
         Robot();
         void set_turn(uint8_t);
-        uint8_t get_turn();
+        uint8_t get_turn() const;
         void printGreeting();
-        bool check_greeting();
+        bool check_greeting() const;
         void generate(const std::vector<std::string> &, const std::vector<std::string> &, std::string &, std::string, int);
         void terminal_response(const std::string &, std::string &);
         std::string evaluate_response(const std::string &);
@@ -39,7 +39,7 @@ void Robot::set_turn(uint8_t num)
 // Checks if it is the robot's current turn.
 // 0 - Not the robot's turn
 // 1 - The robot's turn
-uint8_t Robot::get_turn()
+uint8_t Robot::get_turn() const
 {
     return turn;
 }
@@ -174,7 +174,7 @@ Robot::Robot()
 
 // Checks if a greeting has already
 // been sent.
-bool Robot::check_greeting()
+bool Robot::check_greeting() const
 {
    if (greet_sent)
    {
