@@ -10,10 +10,11 @@ class Robot
     private:
         uint8_t greet_sent;
         uint8_t turn;
-
+        // Greeting
         std::vector<std::string> greeting_responses = { "Hi", "Hey", "What's up?", "Hey there!", "Yo!", "Hi!" };
         std::vector<std::string> quest_greet_responses = { "I'm a robot, how are you?", "Nothing much, what about you?", "I'm running, how about you?", "I'm running", "I'm a program." };
 
+        // POSITIVE
         std::vector<std::string> positive_response = { "Nice.", "Cool.", "Awesome!", "Great!", "Neat!" };
 
     public:
@@ -22,9 +23,9 @@ class Robot
         uint8_t get_turn();
         void printGreeting();
         bool check_greeting();
-        void generate(std::vector<std::string>, std::vector<std::string>, std::string &, std::string, int);
+        void generate(const std::vector<std::string> &, const std::vector<std::string> &, std::string &, std::string, int);
+        void single_response(const std::string &, std::string &);
         std::string evaluate_response(const std::string &);
-
 };
 
 void Robot::set_turn(uint8_t num)
@@ -37,7 +38,7 @@ uint8_t Robot::get_turn()
     return turn;
 }
 
-void Robot::generate(std::vector<std::string> ans, std::vector<std::string> resp, std::string &result, std::string copy, int rand_idx)
+void Robot::generate(const std::vector<std::string> &ans, const std::vector<std::string> &resp, std::string &result, std::string copy, int rand_idx)
 {
    std::vector<std::string>::const_iterator start, end = ans.end();
    // If the result is a greeting.
@@ -48,6 +49,41 @@ void Robot::generate(std::vector<std::string> ans, std::vector<std::string> resp
          result = resp[rand_idx];
       }
    }   
+}
+
+void Robot::single_response(const std::string &response, std::string &result)
+{
+
+
+   std::unordered_map<std::string, const char *> application_map = {
+       {"chrome", "start chrome"},
+       {"edge", "start msedge"},
+       {"task", "taskmgr"}
+   };
+
+   std::unordered_map<std::string, const char *> file_map = {
+       {"files", "ls"},
+       {"back", "cd .."}
+   };
+
+   for (auto it : application_map)
+   {
+      if (response.find(it.first) != std::string::npos)
+      {
+         std::system(it.second);
+         result = "Process executed = '" + static_cast<std::string>(it.second) + "'";
+         break;
+      }
+   }
+   for (auto it : file_map)
+   {
+      if (response.find(it.first) != std::string::npos)
+      {
+         std::system(it.second);
+         result = "Process executed = '" + static_cast<std::string>(it.second) + "'";
+         break;
+      }
+   }
 }
 
 std::string Robot::evaluate_response(const std::string &response)
@@ -68,7 +104,7 @@ std::string Robot::evaluate_response(const std::string &response)
 
       std::vector<std::string> positive_answer =
       {
-         "alright", "fine", "good", "solid", "well", "decent"
+         "alright", "fine", "good", "yeah", "great", "yes"
       };
 
        rand_idx = rand() % 5 + 0;
@@ -89,37 +125,8 @@ std::string Robot::evaluate_response(const std::string &response)
             i--;
          }
        }
-
-      std::vector<std::string>::const_iterator start, end = greeting_answer.end();
-       // If the result is a greeting.
-       for (start = greeting_answer.begin(); start < end; ++start)
-       {
-          if (copy.find(*start) != std::string::npos)
-          {
-             result = greeting_responses[rand_idx];
-          }
-       }
-
-       end = greet_resp_answer.end();
-
-       for (start = greet_resp_answer.begin(); start < end; ++start)
-       {
-         if (copy.find(*start) != std::string::npos)
-         {
-            result = quest_greet_responses[rand_idx];
-         }
-       }
-
-       end = positive_answer.end();
-
-       for (start = positive_answer.begin(); start < end; ++start)
-       {
-         if (copy.find(*start) != std::string::npos)
-         {
-            result = positive_response[rand_idx];
-         }
-       }
-
+       
+       single_response(response, result);
        generate(greeting_answer, greeting_responses, result, copy, rand_idx);
        generate(greet_resp_answer, quest_greet_responses, result, copy, rand_idx);
        generate(positive_answer, positive_response, result, copy, rand_idx);
