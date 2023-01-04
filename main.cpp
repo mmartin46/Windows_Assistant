@@ -6,8 +6,6 @@
 // Allows the user to login
 void login(User &usr, std::string &usrn, std::string &pssc);
 
-// Clears the used memory from the game.
-void delete_all(User *usr, RootUser *root, Game *game);
 
 int main()
 {
@@ -67,19 +65,14 @@ int main()
         ai.set_turn(0);
    }
 
-   delete_all(usr, root, game);
+   delete usr;
+   delete root;
+   delete game;
 
    // Game End
    std::cout << "********* Ending the AI Program **********" << std::endl;
 
    return 0;
-}
-
-void delete_all(User *usr, RootUser *root, Game *game)
-{
-   delete usr;
-   delete root;
-   delete game;
 }
 
 void login(User &usr, std::string &usrn, std::string &pssc)

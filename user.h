@@ -1,8 +1,13 @@
 // Matthew 5:27
 #ifndef USER_H
 #define USER_H
-
 #include "libraries.cpp"
+
+enum permissions {
+   NOT_ROOT = 0,
+   IS_ROOT = 1
+};
+
 /*
 User
 The user is responsible for sending requests to the robot
@@ -17,9 +22,12 @@ class User
       uint8_t acc_init;
       uint8_t turn;
       std::pair<std::string, std::string> auth;
+      permissions usr_perm = NOT_ROOT;
+
    public:
       User() { acc_init = 0; turn = 0; }
       virtual ~User();
+
 
       User& operator=(const User&);
 
@@ -146,8 +154,11 @@ class RootUser : public User
       ~RootUser();
 };
 
+// Intializes the permissions of the root user.
 void RootUser::root_init(const std::string &usrn, const std::string &pssc)
 {
+   usr_perm = IS_ROOT;
+
    auth.first = usrn;
    auth.second = pssc;
    std::cout << "Root user initialized for '" + auth.first + "'" << std::endl;
