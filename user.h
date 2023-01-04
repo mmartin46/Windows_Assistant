@@ -36,11 +36,18 @@ class User
       virtual void set_password(const std::string &);
       std::string get_username() const;
       std::string get_password() const;
+      uint8_t is_root() const;
 
       std::string send_request();
       void set_turn(uint8_t);
       uint8_t get_turn() const;
 };
+
+// Is the user a root user or not.
+uint8_t User::is_root() const
+{
+   return usr_perm == IS_ROOT;
+}
 
 // Returns the username.
 std::string User::get_username() const
@@ -152,6 +159,7 @@ class RootUser : public User
 {
    public:
       void root_init(const std::string&, const std::string &);
+      void remove_root();
       ~RootUser();
 };
 
@@ -164,6 +172,12 @@ void RootUser::root_init(const std::string &usrn, const std::string &pssc)
    auth.second = pssc;
    std::cout << "Root user initialized for '" + auth.first + "'" << std::endl;
    std::cout << "********** ROOT MODE ************" << std::endl;
+}
+
+// Removes root permissions from the user.
+void RootUser::remove_root()
+{
+   usr_perm = NOT_ROOT;
 }
 
 RootUser::~RootUser()

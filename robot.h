@@ -9,25 +9,26 @@
 class Robot
 {
     private:
+        // Variables
         uint8_t greet_sent;
         uint8_t turn;
-
-
-        // Greeting
+        // Greetings
         std::vector<std::string> greeting_responses = { "Hi", "Hey", "What's up?", "Hey there!", "Yo!", "Hi!" };
         std::vector<std::string> quest_greet_responses = { "I'm a robot, how are you?", "Nothing much, what about you?", "I'm running, how about you?", "I'm running", "I'm a program." };
 
         // General Responses
         std::vector<std::string> positive_response = { "Nice.", "Cool.", "Awesome!", "Great!", "Neat!" };
 
-        // Setting
-        std::vector<std::string> settings = { "root" , "quit" };
+        // Settings
+        std::vector<std::string> settings = { "root" , "quit" , "logout" };
     public:
         Robot();
         void set_turn(uint8_t);
         uint8_t get_turn() const;
         void printGreeting();
         bool check_greeting() const;
+
+
         void generate(const std::vector<std::string> &, const std::vector<std::string> &, std::string &, std::string, int);
         void terminal_response(const std::string &, std::string &);
         void setting_response(std::string &, std::string &);
@@ -52,6 +53,10 @@ void Robot::setting_response(std::string &result, std::string &copy)
          if (it == "quit")
          {
             result = "Quitting the AI Program...";
+         }
+         if (it == "logout")
+         {
+            result = "Logging Out...";
          }
       }
    }
@@ -102,7 +107,12 @@ void Robot::terminal_response(const std::string &response, std::string &result)
        {"edge", "start msedge"},
        {"task", "taskmgr"},
        {"explore", "explorer"},
-       {"calculator", "calc"}
+       {"calculator", "calc"},
+       {"calendar", "cal"},
+       {"date", "cal"},
+       {"drivers", "driverquery"},
+       {"system", "systeminfo"},
+       {"green", "color 2"}
    };
 
    // File Management
@@ -135,6 +145,8 @@ void Robot::terminal_response(const std::string &response, std::string &result)
          break;
       }
    }
+
+
 }
 
 // Evaluates the user's response and returns

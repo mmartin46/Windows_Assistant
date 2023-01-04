@@ -50,14 +50,26 @@ int main()
 
         if (ai.evaluate_response(response) == "Root Login")
         {
-            std::cout << "**************************" << std::endl;
-            login(*usr, usrn, pssc);
-            usr = new RootUser();
-            static_cast<RootUser*>(usr)->root_init(usrn, pssc);
+            if (!usr->is_root())
+            {
+               std::cout << "**************************" << std::endl;
+               login(*usr, usrn, pssc);
+               usr = new RootUser();
+               static_cast<RootUser*>(usr)->root_init(usrn, pssc);
+            }
+            else
+            {
+               std::cout << "You are already a root user." << std::endl;
+            }
         }
         else if (ai.evaluate_response(response) == "Quitting the AI Program...")
         {
             game->set_status(0);
+        }
+        else if (ai.evaluate_response(response) == "Logging Out...")
+        {
+            static_cast<RootUser*>(usr)->remove_root();
+            login(*usr, usrn, pssc);
         }
 
         ai.set_turn(0);
