@@ -17,7 +17,6 @@ int main()
 		game = new(std::nothrow) Game;
 		usr = new(std::nothrow) User;
 	}
-
 	catch (std::bad_alloc &ex)
 	{
 		std::cerr << "Start Up Exception: Out of memory!\n";
