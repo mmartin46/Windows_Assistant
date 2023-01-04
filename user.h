@@ -20,6 +20,8 @@ class User
    public:
       User() { acc_init = 0; turn = 0; }
       virtual ~User();
+
+      User& operator=(const User&);
       virtual void set_username(const std::string &);
       virtual void set_password(const std::string &);
       std::string send_request();
@@ -27,6 +29,19 @@ class User
       void set_turn(uint8_t);
       uint8_t get_turn() const;
 };
+
+// Copies the authorization of an account
+// to another.
+User& User::operator=(const User& rhs)
+{
+   if (this != &rhs)
+   {
+      this->acc_init = rhs.acc_init;
+      this->turn = rhs.turn;
+      this->auth = rhs.auth;
+   }
+   return this;
+}
 
 // Send request
 std::string User::send_request()
