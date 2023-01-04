@@ -41,6 +41,7 @@ Game::Game()
     run = 1;
 }
 
+// Destroys the game
 Game::~Game()
 {
     run = 0;
