@@ -134,16 +134,19 @@ void User::set_password(const std::string &pass)
    }
 }
 
+// Sets the user's turn
 void User::set_turn(uint8_t t)
 {
    turn = t;
 }
 
+// Gets the user's turn
 uint8_t User::get_turn() const
 {
    return turn;
 }
 
+// Destroys the user
 User::~User()
 {
    std::cout << "Logging out of account '" + auth.first + "'..." << std::endl;
