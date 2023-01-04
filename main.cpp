@@ -3,7 +3,11 @@
 #include "robot.h"
 #include "user.h"
 
+// Allows the user to login
 void login(User &usr, std::string &usrn, std::string &pssc);
+
+// Clears the used memory from the game.
+void delete_all(User *usr, RootUser *root, Game *game);
 
 int main()
 {
@@ -12,21 +16,21 @@ int main()
     User *usr = NULL;
     RootUser *root = NULL;
 
-
    try
    {
       game = new (std::nothrow) Game;
       usr = new (std::nothrow) User;
    }
-   catch (std::bad_alloc)
+   catch (std::bad_alloc& ex)
    {
       std::cerr << "Start Up Exception: Out of memory!\n";
       exit(1);
    }
+
    Robot ai;
 
 
-   // User Credientials
+   // User Credentials
    std::string usrn;
    std::string pssc;
 
@@ -55,19 +59,27 @@ int main()
             root = new RootUser;
             root->root_init(usrn, pssc);
         }
-
+        else if (ai.evaluate_response(response) == "Quitting the AI Program...")
+        {
+            game->set_status(0);
+        }
 
         ai.set_turn(0);
    }
 
-   delete usr;
-   delete root;
-   delete game;
+   delete_all(usr, root, game);
 
    // Game End
    std::cout << "********* Ending the AI Program **********" << std::endl;
 
    return 0;
+}
+
+void delete_all(User *usr, RootUser *root, Game *game)
+{
+   delete usr;
+   delete root;
+   delete game;
 }
 
 void login(User &usr, std::string &usrn, std::string &pssc)

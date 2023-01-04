@@ -21,7 +21,7 @@ class Robot
         std::vector<std::string> positive_response = { "Nice.", "Cool.", "Awesome!", "Great!", "Neat!" };
 
         // Setting
-        std::vector<std::string> settings = { "root" };
+        std::vector<std::string> settings = { "root" , "quit" };
     public:
         Robot();
         void set_turn(uint8_t);
@@ -48,6 +48,10 @@ void Robot::setting_response(std::string &result, std::string &copy)
          if (it == "root")
          {
             result = "Root Login";
+         }
+         if (it == "quit")
+         {
+            result = "Quitting the AI Program...";
          }
       }
    }

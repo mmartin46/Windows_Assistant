@@ -9,7 +9,7 @@
 class Game
 {
     private:
-        int run;
+        uint8_t run;
     
     public:
         Game();
@@ -27,7 +27,7 @@ void Game::set_status(uint8_t t)
 // Checks if the game is running.
 bool Game::get_status() const
 {
-    if (run)
+    if (!run)
     {
         return 0;
     }
@@ -38,7 +38,7 @@ bool Game::get_status() const
 // Starts the game
 Game::Game()
 {
-    run = 0;
+    run = 1;
 }
 
 Game::~Game()
