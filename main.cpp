@@ -8,10 +8,23 @@ void login(User &usr, std::string &usrn, std::string &pssc);
 int main()
 {
    // Initialization
-   Game *game = new (std::nothrow) Game;
+    Game *game = NULL;
+    User *usr = NULL;
+    RootUser *root = NULL;
+
+
+   try
+   {
+      game = new (std::nothrow) Game;
+      usr = new (std::nothrow) User;
+   }
+   catch (std::bad_alloc)
+   {
+      std::cerr << "Start Up Exception: Out of memory!\n";
+      exit(1);
+   }
    Robot ai;
-   User *usr = new (std::nothrow) User;
-   RootUser *root = NULL;
+
 
    // User Credientials
    std::string usrn;
