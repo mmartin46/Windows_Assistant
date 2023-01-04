@@ -49,7 +49,8 @@ void Robot::root_response(const std::string &resp, std::string &result, const Us
 		std::unordered_map<std::string, std::string > root_resp = {
 		   { 	"drivers", "driverquery" },
 			{ 	"system", "systeminfo" },
-			{ 	"account", "wmic useraccount" }
+			{ 	"account", "wmic useraccount" },
+         {  "mac", "getmac" }
 		};
 
 		// Checks if the maps contain a key which is
