@@ -104,23 +104,30 @@ User::~User()
    std::cout << "Logging out of account '" + auth.first + "'..." << std::endl;
 }
 
-// Creates a root user
-// class RootUser : public User
-// {
-//    public:
-//       void root_init();
-//       ~RootUser();
-// }
 
-// RootUser::root_init()
-// {
-//    std::cout << "Root user initialized for '" + auth.first + "'" << std::endl;
-//    std::cout << "********** ROOT MODE ************" << std::endl; 
-// }
 
-// RootUser::~RootUser()
-// {
-//    std::cout << "(ROOT) Logging out of account '" + auth.first + "'..." << std::endl;
-// }
+// Creates a root
+// Has the same permissions as the user
+// but can make further requests to the
+// ai.
+class RootUser : public User
+{
+   public:
+      void root_init(const std::string&, const std::string &);
+      ~RootUser();
+};
+
+void RootUser::root_init(const std::string &usrn, const std::string &pssc)
+{
+   auth.first = usrn;
+   auth.second = pssc;
+   std::cout << "Root user initialized for '" + auth.first + "'" << std::endl;
+   std::cout << "********** ROOT MODE ************" << std::endl;
+}
+
+RootUser::~RootUser()
+{
+   std::cout << "(ROOT) Logging out of account '" + auth.first + "'..." << std::endl;
+}
 
 #endif

@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <vector>
+#include <new>
 #include <unordered_map>
 #include <time.h>
 #include <cctype>
