@@ -29,12 +29,40 @@ class Robot
         bool check_greeting() const;
 
 
+        void root_response(const std::string &, std::string &, const User &);
+
         void generate(const std::vector<std::string> &, const std::vector<std::string> &, std::string &, std::string, int);
         void terminal_response(const std::string &, std::string &);
         void setting_response(std::string &, std::string &);
 
-        std::string evaluate_response(const std::string &);
+        std::string evaluate_response(const std::string &, const User &);
 };
+
+
+// Responses only accessable by the root.
+void Robot::root_response(const std::string &resp, std::string &result, const User &usr)
+{
+   if (usr.is_root())
+   {
+         std::unordered_map<std::string, std::string> root_resp = {
+            {"drivers", "driverquery"},
+            {"system", "systeminfo"},
+            {"account", "wmic useraccount"}
+         };
+
+         // Checks if the maps contain a key which is
+         // also contained in the response.
+         for (auto it : root_resp)
+         {
+            if (resp.find(it.first) != std::string::npos)
+            {
+               std::system(it.second.c_str());
+               result = "Process executed = '" + static_cast<std::string>(it.second) + "'";
+               break;
+            }
+         }
+   }
+}
 
 // Checks if the user has requested to configure
 // any user settings.
@@ -110,19 +138,17 @@ void Robot::terminal_response(const std::string &response, std::string &result)
        {"calculator", "calc"},
        {"calendar", "cal"},
        {"date", "cal"},
-       {"drivers", "driverquery"},
-       {"system", "systeminfo"},
        {"green", "color 2"}
    };
 
    // File Management
    std::unordered_map<std::string, const char *> file_map = {
-       {"files", "ls"},
+       {"files", "ls -l"},
        {"where", "pwd"},
        {"text", "find . -type f -name '*.txt'"},
        {"cpp", "find . -type f -name '*.cpp'"},
        {"processes", "ps"},
-       {"environment", "printenv"}
+       {"environment", "printenv"},
    };
 
    // Checks if the maps contain a key which is
@@ -151,7 +177,7 @@ void Robot::terminal_response(const std::string &response, std::string &result)
 
 // Evaluates the user's response and returns
 // a string based off what the user requested.
-std::string Robot::evaluate_response(const std::string &response)
+std::string Robot::evaluate_response(const std::string &response, const User &usr)
 {
     if (this->get_turn())
     {
@@ -179,7 +205,7 @@ std::string Robot::evaluate_response(const std::string &response)
        rand_idx = rand() % 5 + 0;
 
        // Remove all punctuation, spaces, and convert each character to lowercase.
-       std::string result = "I don't understand.";
+       std::string result = "I don't have a solid response.";
        std::string copy = response;
        // Lowercase
        std::transform(copy.begin(), copy.end(), copy.begin(), [](unsigned char ch) { return std::tolower(ch); });
@@ -196,6 +222,8 @@ std::string Robot::evaluate_response(const std::string &response)
        }
 
        // Todo Later: Refactor
+
+       this->root_response(response, copy, usr);
        this->setting_response(result, copy);
        this->terminal_response(response, result);
        this->generate(greeting_answer, greeting_responses, result, copy, rand_idx);
