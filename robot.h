@@ -21,6 +21,7 @@ class Robot
 	// Settings
 	std::vector<std::string > settings = { "root", "quit", "logout" };
 
+
 	public:
 		Robot();
 	void set_turn(uint8_t);
