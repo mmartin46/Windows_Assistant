@@ -16,7 +16,10 @@ class Robot
    	std::vector<std::string > quest_greet_responses = { "I'm a robot, how are you?", "Nothing much, what about you?", "I'm running, how about you?", "I'm running", "I'm a program." };
 
 	   // General Responses
-	   std::vector<std::string > positive_response = { "Nice.", "Cool.", "Awesome!", "Great!", "Neat!" };
+	   std::vector<std::string > positive_responses = { "Nice.", "Cool.", "Awesome!", "Great!", "Neat!" };
+
+      // Compliment Responses
+      std::vector<std::string > compliment_responses = { "Appreciate it!", "No problem!", "Thank you!", "Don't mention it.", "My duty!" };
 
 	   // Settings
 	   std::vector<std::string > settings = { "root", "quit", "logout" };
@@ -44,7 +47,7 @@ void Robot::root_response(const std::string &resp, std::string &result, const Us
 	if (usr.is_root())
 	{
 		std::unordered_map<std::string, std::string > root_resp = {
-		{ 	"drivers", "driverquery" },
+		   { 	"drivers", "driverquery" },
 			{ 	"system", "systeminfo" },
 			{ 	"account", "wmic useraccount" }
 		};
@@ -191,6 +194,8 @@ std::string Robot::evaluate_response(const std::string &response, const User &us
 
 		std::vector<std::string > positive_answer = { "alright", "fine", "good", "yeah", "great", "yes" };
 
+      std::vector<std::string > compliment_answer = { "thankyou", "thanks", "thank", "awesome", "useful" };
+
 		rand_idx = rand() % 5 + 0;
 
 		// Remove all punctuation, spaces, and convert each character to lowercase.
@@ -219,7 +224,9 @@ std::string Robot::evaluate_response(const std::string &response, const User &us
 		this->terminal_response(response, result);
 		this->generate(greeting_answer, greeting_responses, result, copy, rand_idx);
 		this->generate(greet_resp_answer, quest_greet_responses, result, copy, rand_idx);
-		this->generate(positive_answer, positive_response, result, copy, rand_idx);
+		this->generate(positive_answer, positive_responses, result, copy, rand_idx);
+		this->generate(compliment_answer, compliment_responses, result, copy, rand_idx);
+
 
 		return result;
 	}
