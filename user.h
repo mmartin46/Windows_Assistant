@@ -22,13 +22,27 @@ class User
       virtual ~User();
 
       User& operator=(const User&);
+
       virtual void set_username(const std::string &);
       virtual void set_password(const std::string &);
-      std::string send_request();
+      std::string get_username() const;
+      std::string get_password() const;
 
+      std::string send_request();
       void set_turn(uint8_t);
       uint8_t get_turn() const;
 };
+
+// Returns the username.
+std::string User::get_username() const
+{
+   return auth.first;
+}
+// Returns the password
+std::string User::get_password() const
+{
+   return auth.second;
+}
 
 // Copies the authorization of an account
 // to another.
@@ -40,7 +54,7 @@ User& User::operator=(const User& rhs)
       this->turn = rhs.turn;
       this->auth = rhs.auth;
    }
-   return this;
+   return *this;
 }
 
 // Send request

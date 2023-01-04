@@ -90,4 +90,11 @@ void login(User &usr, std::string &usrn, std::string &pssc)
    std::cout << "Password: ";
    getline(std::cin, pssc);
    usr.set_password(pssc);
+
+   // TODO: Have info saved to a file
+   std::ofstream file;
+   file.open("credentials.txt");
+   file << usr.get_username() << std::endl;
+   file << usr.get_password() << std::endl;
+   file.close();
 }
