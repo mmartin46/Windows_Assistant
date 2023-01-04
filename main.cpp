@@ -12,7 +12,6 @@ int main()
    // Initialization
     Game *game = NULL;
     User *usr = NULL;
-    RootUser *root = NULL;
 
    try
    {
@@ -53,9 +52,8 @@ int main()
         {
             std::cout << "**************************" << std::endl;
             login(*usr, usrn, pssc);
-            delete usr;
-            root = new RootUser;
-            root->root_init(usrn, pssc);
+            usr = new RootUser();
+            static_cast<RootUser*>(usr)->root_init(usrn, pssc);
         }
         else if (ai.evaluate_response(response) == "Quitting the AI Program...")
         {
@@ -66,7 +64,6 @@ int main()
    }
 
    delete usr;
-   delete root;
    delete game;
 
    // Game End

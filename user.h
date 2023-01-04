@@ -3,6 +3,7 @@
 #define USER_H
 #include "libraries.cpp"
 
+// Describes the users permissions
 enum permissions {
    NOT_ROOT = 0,
    IS_ROOT = 1
