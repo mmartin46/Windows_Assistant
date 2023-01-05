@@ -45,6 +45,7 @@ int main()
 		response = usr->send_request();
 		std::cout << ai.evaluate_response(response, *usr) << std::endl;
 
+		// DEBUG: Executes a request 3 times.
 		if (ai.evaluate_response(response, *usr) == "Root Login")
 		{
 			if (!usr->is_root())

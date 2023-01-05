@@ -3,6 +3,8 @@
 #define ROBOT_H
 #include "User/user.h"
 
+// The robot is responsible for
+// handling the user's requests.
 class Robot
 {
 	private:
@@ -144,6 +146,7 @@ void Robot::generate_all(const std::vector<std::vector<std::string> > &ans, cons
 // terminal_response() function will be called.
 void Robot::terminal_response(const std::string &response, std::string &result)
 {
+	uint8_t flag = 0;
 	// Application Management
 	std::unordered_map< std::string, const char*> application_map = {
 		{ 	"chrome", "start chrome" },
@@ -172,8 +175,12 @@ void Robot::terminal_response(const std::string &response, std::string &result)
 	{
 		if (response.find(it.first) != std::string::npos)
 		{
-			std::system(it.second);
-			result = "Process executed = '" + static_cast<std::string > (it.second) + "'";
+			if (flag == 0)
+			{
+				std::system(it.second);
+				flag = 1;
+			}
+			//result = "Process executed = '" + static_cast<std::string > (it.second) + "'";
 			break;
 		}
 	}
@@ -183,7 +190,7 @@ void Robot::terminal_response(const std::string &response, std::string &result)
 		if (response.find(it.first) != std::string::npos)
 		{
 			std::system(it.second);
-			result = "Process executed = '" + static_cast<std::string > (it.second) + "'";
+			//result = "Process executed = '" + static_cast<std::string > (it.second) + "'";
 			break;
 		}
 	}
@@ -227,15 +234,14 @@ std::string Robot::evaluate_response(const std::string &response, const User &us
 		}
 
 		// Todo Later: Refactor
-
-		this->root_response(response, copy, usr);
-		this->setting_response(result, copy);
-		this->terminal_response(response, result);
 		this->generate(greeting_answer, greeting_responses, result, copy, rand_idx);
 		this->generate(greet_resp_answer, quest_greet_responses, result, copy, rand_idx);
 		this->generate(positive_answer, positive_responses, result, copy, rand_idx);
 		this->generate(compliment_answer, compliment_responses, result, copy, rand_idx);
 
+		this->setting_response(result, copy);
+		this->terminal_response(response, result);
+		this->root_response(response, copy, usr);
 
 		return result;
 	}
