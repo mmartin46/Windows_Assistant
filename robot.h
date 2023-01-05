@@ -194,6 +194,7 @@ void Robot::terminal_response(const std::string &response, std::string &result)
 			break;
 		}
 	}
+	result = "";
 }
 
 // Evaluates the user's response and returns
