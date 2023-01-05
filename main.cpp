@@ -1,7 +1,20 @@
 // Matthew 5:27
+#include "math.h"
 #include "game.h"
 #include "robot.h"
 #include "User/root.h"
+
+#define PRIME_CONST 31
+
+unsigned int str_hash(std::string str)
+{
+    int hC = 0;
+	for (int i = 0; i < str.length(); ++i)
+    {
+        hC += static_cast<int>(str[i]) % 10;
+    }
+    return hC;
+}
 
 // Allows the user to login
 void login(User &usr, std::string &usrn, std::string &pssc);
@@ -37,6 +50,7 @@ int main()
 	// Game start
 	std::cout << "*********This is the AI Program **********" << std::endl;
 
+
 	// Game loop
 	while (game->get_status())
 	{
@@ -46,30 +60,61 @@ int main()
 		std::cout << ai.evaluate_response(response, *usr) << std::endl;
 
 		// DEBUG: Executes a request 3 times.
-		
-		if (ai.evaluate_response(response, *usr) == "Root Login")
+		switch(str_hash(ai.evaluate_response(response, *usr)))
 		{
-			if (!usr->is_root())
-			{
-				std::cout << "**************************" << std::endl;
+			case 27:
+				ai.evaluate_response(response, *usr);
+				if (!usr->is_root())
+				{
+					std::cout << "**************************" << std::endl;
+					login(*usr, usrn, pssc);
+					usr = new RootUser();
+					static_cast<RootUser*> (usr)->root_init(usrn, pssc);
+				}
+				else
+				{
+					std::cout << "You are already a root user." << std::endl;
+				}
+				break;
+			case 104:
+				ai.evaluate_response(response, *usr);
+				game->set_status(0);
+				break;
+			case 63:
+				ai.evaluate_response(response, *usr);
+				static_cast<RootUser*> (usr)->remove_root();
 				login(*usr, usrn, pssc);
-				usr = new RootUser();
-				static_cast<RootUser*> (usr)->root_init(usrn, pssc);
-			}
-			else
-			{
-				std::cout << "You are already a root user." << std::endl;
-			}
+				break;
+			default:
+				ai.evaluate_response(response, *usr);
 		}
-		else if (ai.evaluate_response(response, *usr) == "Quitting the AI Program...")
-		{
-			game->set_status(0);
-		}
-		else if (ai.evaluate_response(response, *usr) == "Logging Out...")
-		{
-			static_cast<RootUser*> (usr)->remove_root();
-			login(*usr, usrn, pssc);
-		}
+
+		// if (ai.evaluate_response(response, *usr) == "Root Login")
+		// {
+		// 	std::cout << str_hash(ai.evaluate_response(response, *usr)) << std::endl;
+		// 	if (!usr->is_root())
+		// 	{
+		// 		std::cout << "**************************" << std::endl;
+		// 		login(*usr, usrn, pssc);
+		// 		usr = new RootUser();
+		// 		static_cast<RootUser*> (usr)->root_init(usrn, pssc);
+		// 	}
+		// 	else
+		// 	{
+		// 		std::cout << "You are already a root user." << std::endl;
+		// 	}
+		// }
+		// else if (ai.evaluate_response(response, *usr) == "Quitting the AI Program...")
+		// {
+		// 	std::cout << str_hash(ai.evaluate_response(response, *usr)) << std::endl;
+		// 	game->set_status(0);
+		// }
+		// else if (ai.evaluate_response(response, *usr) == "Logging Out...")
+		// {
+		// 	std::cout << str_hash(ai.evaluate_response(response, *usr)) << std::endl;
+		// 	static_cast<RootUser*> (usr)->remove_root();
+		// 	login(*usr, usrn, pssc);
+		// }
 
 		ai.set_turn(0);
 	}
