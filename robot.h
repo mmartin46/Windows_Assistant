@@ -1,8 +1,7 @@
 // Proverbs 3:5
 #ifndef ROBOT_H
 #define ROBOT_H
-#include "libraries.cpp"
-#include "user.h"
+#include "User/user.h"
 
 class Robot
 {
@@ -23,6 +22,8 @@ class Robot
 
 	   // Settings
 	   std::vector<std::string > settings = { "root", "quit", "logout" };
+
+      //std::vector<std::vector<std::string>> responses
 
 
 	public:
