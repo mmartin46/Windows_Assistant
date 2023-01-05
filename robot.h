@@ -189,7 +189,11 @@ void Robot::terminal_response(const std::string &response, std::string &result)
 	{
 		if (response.find(it.first) != std::string::npos)
 		{
-			std::system(it.second);
+			if (flag == 0)
+			{
+				std::system(it.second);
+				flag = 1;
+			}
 			//result = "Process executed = '" + static_cast<std::string > (it.second) + "'";
 			break;
 		}

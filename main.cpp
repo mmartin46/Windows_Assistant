@@ -56,6 +56,7 @@ int main()
 	{
 		ai.printGreeting();
 		ai.set_turn(1);
+		
 		response = usr->send_request();
 		std::cout << ai.evaluate_response(response, *usr) << std::endl;
 
@@ -89,32 +90,6 @@ int main()
 				ai.evaluate_response(response, *usr);
 		}
 
-		// if (ai.evaluate_response(response, *usr) == "Root Login")
-		// {
-		// 	std::cout << str_hash(ai.evaluate_response(response, *usr)) << std::endl;
-		// 	if (!usr->is_root())
-		// 	{
-		// 		std::cout << "**************************" << std::endl;
-		// 		login(*usr, usrn, pssc);
-		// 		usr = new RootUser();
-		// 		static_cast<RootUser*> (usr)->root_init(usrn, pssc);
-		// 	}
-		// 	else
-		// 	{
-		// 		std::cout << "You are already a root user." << std::endl;
-		// 	}
-		// }
-		// else if (ai.evaluate_response(response, *usr) == "Quitting the AI Program...")
-		// {
-		// 	std::cout << str_hash(ai.evaluate_response(response, *usr)) << std::endl;
-		// 	game->set_status(0);
-		// }
-		// else if (ai.evaluate_response(response, *usr) == "Logging Out...")
-		// {
-		// 	std::cout << str_hash(ai.evaluate_response(response, *usr)) << std::endl;
-		// 	static_cast<RootUser*> (usr)->remove_root();
-		// 	login(*usr, usrn, pssc);
-		// }
 
 		ai.set_turn(0);
 	}
@@ -136,13 +111,4 @@ void login(User &usr, std::string &usrn, std::string &pssc)
 	std::cout << "Password: ";
 	getline(std::cin, pssc);
 	usr.set_password(pssc);
-
-	// TODO: Have info saved to a file
-	/*
-	std::ofstream file;
-	file.open("credentials.txt");
-	file << usr.get_username() << std::endl;
-	file << usr.get_password() << std::endl;
-	file.close();
-	*/
 }
