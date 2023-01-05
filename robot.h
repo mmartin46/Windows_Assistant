@@ -23,7 +23,7 @@ class Robot
 	   // Settings
 	   std::vector<std::string > settings = { "root", "quit", "logout" };
 
-      //std::vector<std::vector<std::string>> responses
+      std::vector<std::vector<std::string> > responses = { greeting_responses, quest_greet_responses, positive_responses, compliment_responses };
 
 
 	public:
@@ -33,9 +33,12 @@ class Robot
 	   void printGreeting();
 	   bool check_greeting() const;
 
-	   void root_response(const std::string &, std::string &, const User &);
 
+		// Responses
+	   void root_response(const std::string &, std::string &, const User &);
+		void generate_all(const std::vector<std::vector<std::string> > &, const std::vector<std::vector<std::string> > &, std::string &, std::string, int);
 	   void generate(const std::vector<std::string > &, const std::vector<std::string > &, std::string &, std::string, int);
+
 	   void terminal_response(const std::string &, std::string &);
 	   void setting_response(std::string &, std::string &);
 
@@ -115,7 +118,7 @@ uint8_t Robot::get_turn() const
 // Generates a general response to
 // a general answer.
 // ans - A vector of strings that holds the possible user's requests.
-// res - A vector of strings that holds the possible bot resposnes.
+// res - A vector of strings that holds the possible bot responses.
 void Robot::generate(const std::vector<std::string > &ans, const std::vector<std::string > &resp, std::string &result, std::string copy, int rand_idx)
 {
 	std::vector<std::string>::const_iterator start, end = ans.end();
@@ -128,6 +131,22 @@ void Robot::generate(const std::vector<std::string > &ans, const std::vector<std
 		}
 	}
 }
+
+// Uses the generate() function on each vector of responses and answers.
+// ans - A matrix of strings that holds the possible user's requests.
+// res - A matrix of strings that holds the possible bot responses.
+void Robot::generate_all(const std::vector<std::vector<std::string> > &ans, const std::vector<std::vector<std::string> > &resp, std::string &result, std::string copy, int rand_idx)
+{
+	std::vector<std::vector<std::string> >::const_iterator ans_start, ans_end = ans.end();
+	std::vector<std::vector<std::string> >::const_iterator resp_start, resp_end = resp.end();
+
+	for ( ans_start = ans.begin(), resp_start = resp.begin(); ans_start < ans_end; ++ans_start, ++resp_start )
+	{
+		generate(*resp_start, *resp_end, result, copy, rand_idx);
+	}
+
+}
+
 
 // If the user wants to use commands using
 // the terminal command prompt the
@@ -198,6 +217,8 @@ std::string Robot::evaluate_response(const std::string &response, const User &us
 
       std::vector<std::string > compliment_answer = { "thankyou", "thanks", "thank", "awesome", "useful" };
 
+		std::vector<std::vector<std::string > > answers = { greeting_answer, greet_resp_answer, positive_answer, compliment_answer };
+
 		rand_idx = rand() % 5 + 0;
 
 		// Remove all punctuation, spaces, and convert each character to lowercase.
@@ -224,11 +245,7 @@ std::string Robot::evaluate_response(const std::string &response, const User &us
 		this->root_response(response, copy, usr);
 		this->setting_response(result, copy);
 		this->terminal_response(response, result);
-		this->generate(greeting_answer, greeting_responses, result, copy, rand_idx);
-		this->generate(greet_resp_answer, quest_greet_responses, result, copy, rand_idx);
-		this->generate(positive_answer, positive_responses, result, copy, rand_idx);
-		this->generate(compliment_answer, compliment_responses, result, copy, rand_idx);
-
+		this->generate_all(answers, responses, result, copy, rand_idx);
 
 		return result;
 	}
