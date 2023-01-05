@@ -9,22 +9,18 @@ class Robot
 		// Variables
 		uint8_t greet_sent;
 	   uint8_t turn;
+
 	   // Greetings
 	   std::vector<std::string > greeting_responses = { "Hi", "Hey", "What's up?", "Hey there!", "Yo!", "Hi!" };
-
    	std::vector<std::string > quest_greet_responses = { "I'm a robot, how are you?", "Nothing much, what about you?", "I'm running, how about you?", "I'm running", "I'm a program." };
-
 	   // General Responses
 	   std::vector<std::string > positive_responses = { "Nice.", "Cool.", "Awesome!", "Great!", "Neat!" };
-
       // Compliment Responses
       std::vector<std::string > compliment_responses = { "Appreciate it!", "No problem!", "Thank you!", "Don't mention it.", "My duty!" };
-
 	   // Settings
 	   std::vector<std::string > settings = { "root", "quit", "logout" };
 
       std::vector<std::vector<std::string> > responses = { greeting_responses, quest_greet_responses, positive_responses, compliment_responses };
-
 
 	public:
 		Robot();
@@ -33,11 +29,10 @@ class Robot
 	   void printGreeting();
 	   bool check_greeting() const;
 
-
-		// Responses
 	   void root_response(const std::string &, std::string &, const User &);
-		void generate_all(const std::vector<std::vector<std::string> > &, const std::vector<std::vector<std::string> > &, std::string &, std::string, int);
+
 	   void generate(const std::vector<std::string > &, const std::vector<std::string > &, std::string &, std::string, int);
+		void generate_all(const std::vector<std::vector<std::string> > &, const std::vector<std::vector<std::string> > &, std::string &, std::string, int);
 
 	   void terminal_response(const std::string &, std::string &);
 	   void setting_response(std::string &, std::string &);
@@ -118,7 +113,7 @@ uint8_t Robot::get_turn() const
 // Generates a general response to
 // a general answer.
 // ans - A vector of strings that holds the possible user's requests.
-// res - A vector of strings that holds the possible bot responses.
+// res - A vector of strings that holds the possible bot resposnes.
 void Robot::generate(const std::vector<std::string > &ans, const std::vector<std::string > &resp, std::string &result, std::string copy, int rand_idx)
 {
 	std::vector<std::string>::const_iterator start, end = ans.end();
@@ -132,9 +127,6 @@ void Robot::generate(const std::vector<std::string > &ans, const std::vector<std
 	}
 }
 
-// Uses the generate() function on each vector of responses and answers.
-// ans - A matrix of strings that holds the possible user's requests.
-// res - A matrix of strings that holds the possible bot responses.
 void Robot::generate_all(const std::vector<std::vector<std::string> > &ans, const std::vector<std::vector<std::string> > &resp, std::string &result, std::string copy, int rand_idx)
 {
 	std::vector<std::vector<std::string> >::const_iterator ans_start, ans_end = ans.end();
@@ -142,9 +134,8 @@ void Robot::generate_all(const std::vector<std::vector<std::string> > &ans, cons
 
 	for ( ans_start = ans.begin(), resp_start = resp.begin(); ans_start < ans_end; ++ans_start, ++resp_start )
 	{
-		generate(*resp_start, *resp_end, result, copy, rand_idx);
+		generate(*resp_start, *resp_end, result,copy, rand_idx);
 	}
-
 }
 
 
@@ -208,15 +199,12 @@ std::string Robot::evaluate_response(const std::string &response, const User &us
 		int rand_idx;
 		srand(time(NULL));
 
-		// General Greetings
+		// General Answers
 		std::vector<std::string > greeting_answer = { "hey", "hi", "hii", "hello", "heyy", "heythere" };
-
 		std::vector<std::string > greet_resp_answer = { "howareyou", "howhaveyoubeen", "whatsnew", "whatsup", "whatsgoingon", "howsitgoing" };
-
 		std::vector<std::string > positive_answer = { "alright", "fine", "good", "yeah", "great", "yes" };
-
       std::vector<std::string > compliment_answer = { "thankyou", "thanks", "thank", "awesome", "useful" };
-
+		// All Answers
 		std::vector<std::vector<std::string > > answers = { greeting_answer, greet_resp_answer, positive_answer, compliment_answer };
 
 		rand_idx = rand() % 5 + 0;
@@ -226,9 +214,7 @@ std::string Robot::evaluate_response(const std::string &response, const User &us
 		std::string copy = response;
 		// Lowercase
 		std::transform(copy.begin(), copy.end(), copy.begin(), [](unsigned char ch)
-		{
-			return std::tolower(ch);
-	});
+		{ return std::tolower(ch); });
 
 		// Removes punctuation
 		for (int i = 0; i < copy.size(); ++i)
@@ -245,7 +231,11 @@ std::string Robot::evaluate_response(const std::string &response, const User &us
 		this->root_response(response, copy, usr);
 		this->setting_response(result, copy);
 		this->terminal_response(response, result);
-		this->generate_all(answers, responses, result, copy, rand_idx);
+		this->generate(greeting_answer, greeting_responses, result, copy, rand_idx);
+		this->generate(greet_resp_answer, quest_greet_responses, result, copy, rand_idx);
+		this->generate(positive_answer, positive_responses, result, copy, rand_idx);
+		this->generate(compliment_answer, compliment_responses, result, copy, rand_idx);
+
 
 		return result;
 	}
