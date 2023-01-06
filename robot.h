@@ -36,10 +36,10 @@ class Robot
 	   void generate(const std::vector<std::string > &, const std::vector<std::string > &, std::string &, std::string, int);
 		void generate_all(const std::vector<std::vector<std::string> > &, const std::vector<std::vector<std::string> > &, std::string &, std::string, int);
 
-	   void terminal_response(const std::string &, std::string &, uint8_t &);
+	   void terminal_response(const std::string &, std::string &, int);
 	   void setting_response(std::string &, std::string &);
 
-	   std::string evaluate_response(const std::string &, const User &);
+	   std::string evaluate_response(const std::string &, const User &, int);
 };
 
 // Responses only accessable by the root.
@@ -61,7 +61,7 @@ void Robot::root_response(const std::string &resp, std::string &result, const Us
 			if (resp.find(it.first) != std::string::npos)
 			{
 				std::system(it.second.c_str());
-				result = "Process executed = '" + static_cast<std::string > (it.second) + "'";
+				result = "Command Called";
 				break;
 			}
 		}
@@ -144,7 +144,7 @@ void Robot::generate(const std::vector<std::string > &ans, const std::vector<std
 // If the user wants to use commands using
 // the terminal command prompt the
 // terminal_response() function will be called.
-void Robot::terminal_response(const std::string &response, std::string &result, uint8_t &flag)
+void Robot::terminal_response(const std::string &response, std::string &result, int flag)
 {
 	// Application Management
 	std::unordered_map< std::string, const char*> application_map = {
@@ -170,45 +170,38 @@ void Robot::terminal_response(const std::string &response, std::string &result, 
 
 	// Checks if the maps contain a key which is
 	// also contained in the response.
-	
-	for ( auto const &it : application_map )
-	{
-		if (response.find(it.first) != std::string::npos)
+	if (!flag)
+	{	
+		for ( auto const &it : application_map )
 		{
-			if (flag == 0)
+			if (response.find(it.first) != std::string::npos)
 			{
 				std::system(it.second);
-				flag++;
-				result = "Process executed = '" + static_cast<std::string > (it.second) + "'";
+				result = "Command Called";
+				break;
 			}
-			break;
 		}
-	}
 
-	for ( auto const &it: file_map )
-	{
-		if (response.find(it.first) != std::string::npos)
+		for ( auto const &it: file_map )
 		{
-			if (flag == 0)
+			if (response.find(it.first) != std::string::npos)
 			{
 				std::system(it.second);
-				flag++;
-				result = "Process executed = '" + static_cast<std::string > (it.second) + "'";
+				result = "Command Called";
+				break;
 			}
-			break;
 		}
 	}
 }
 
 // Evaluates the user's response and returns
 // a string based off what the user requested.
-std::string Robot::evaluate_response(const std::string &response, const User &usr)
+std::string Robot::evaluate_response(const std::string &response, const User &usr, int flag)
 {
 	if (this->get_turn())
 	{
 		// Generating a Random Number
 		int rand_idx;
-		uint8_t flag = 0;
 
 		srand(time(NULL));
 

@@ -56,13 +56,13 @@ int main()
 	{
 		ai.printGreeting();
 		ai.set_turn(1);
-		
+
 		response = usr->send_request();
 		// DEBUG: Executes a request 2 times.
-		switch(str_hash(ai.evaluate_response(response, *usr)))
+		switch(str_hash(ai.evaluate_response(response, *usr, 1)))
 		{
 			case 27:
-				ai.evaluate_response(response, *usr);
+				ai.evaluate_response(response, *usr, 0);
 				if (!usr->is_root())
 				{
 					std::cout << "**************************" << std::endl;
@@ -76,16 +76,17 @@ int main()
 				}
 				break;
 			case 104:
-				ai.evaluate_response(response, *usr);
+				ai.evaluate_response(response, *usr, 0);
 				game->set_status(0);
 				break;
 			case 63:
-				ai.evaluate_response(response, *usr);
+				ai.evaluate_response(response, *usr, 0);
 				static_cast<RootUser*> (usr)->remove_root();
 				login(*usr, usrn, pssc);
 				break;
 			default:
-				std::cout << ai.evaluate_response(response, *usr) << std::endl;
+			if (ai.evaluate_response(response, *usr, 1) != "Command Called")
+				std::cout << ai.evaluate_response(response, *usr, 0) << std::endl;
 		}
 
 
