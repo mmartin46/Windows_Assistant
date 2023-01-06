@@ -53,7 +53,8 @@ void Robot::root_response(const std::string &resp, std::string &result, const Us
 				{ 	"drivers", "driverquery" },
 				{ 	"system", "systeminfo" },
 				{ 	"account", "wmic useraccount" },
-				{  "mac", "getmac" }
+				{  "mac", "getmac" },
+				{  "tree", "tree"}
 			};
 
 			// Checks if the maps contain a key which is
