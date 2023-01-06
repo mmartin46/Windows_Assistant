@@ -5,6 +5,9 @@
 #include "User/root.h"
 
 #define PRIME_CONST 31
+#define DONT_EXECUTE 0
+#define DO_EXECUTE 1
+
 
 unsigned int str_hash(std::string str)
 {
@@ -59,10 +62,10 @@ int main()
 
 		response = usr->send_request();
 		// DEBUG: Executes a request 2 times.
-		switch(str_hash(ai.evaluate_response(response, *usr, 1)))
+		switch(str_hash(ai.evaluate_response(response, *usr, DO_EXECUTE)))
 		{
 			case 194:
-				ai.evaluate_response(response, *usr, 0);
+				ai.evaluate_response(response, *usr, DONT_EXECUTE);
 				if (!usr->is_root())
 				{
 					std::cout << "**************************" << std::endl;
@@ -76,18 +79,18 @@ int main()
 				}
 				break;
 			case 468:
-				ai.evaluate_response(response, *usr, 0);
+				ai.evaluate_response(response, *usr, DONT_EXECUTE);
 				game->set_status(0);
 				break;
 			case 266:
-				ai.evaluate_response(response, *usr, 0);
+				ai.evaluate_response(response, *usr, DONT_EXECUTE);
 				usr->logout_call();
 				static_cast<RootUser*> (usr)->remove_root();
 				login(*usr, usrn, pssc);
 				break;
 			default:
-			if (ai.evaluate_response(response, *usr, 1) != "\n")
-				std::cout << ai.evaluate_response(response, *usr, 0) << std::endl;
+			if (ai.evaluate_response(response, *usr, DO_EXECUTE) != "\n")
+				std::cout << ai.evaluate_response(response, *usr, DONT_EXECUTE) << std::endl;
 		}
 
 
