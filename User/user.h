@@ -152,4 +152,5 @@ User::~User()
    std::cout << "Logging out of account '" + auth.first + "'..." << std::endl;
 }
 
+
 #endif

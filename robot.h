@@ -36,7 +36,7 @@ class Robot
 	   void generate(const std::vector<std::string > &, const std::vector<std::string > &, std::string &, std::string, int);
 		void generate_all(const std::vector<std::vector<std::string> > &, const std::vector<std::vector<std::string> > &, std::string &, std::string, int);
 
-	   void terminal_response(const std::string &, std::string &);
+	   void terminal_response(const std::string &, std::string &, uint8_t &);
 	   void setting_response(std::string &, std::string &);
 
 	   std::string evaluate_response(const std::string &, const User &);
@@ -129,24 +129,23 @@ void Robot::generate(const std::vector<std::string > &ans, const std::vector<std
 	}
 }
 
-void Robot::generate_all(const std::vector<std::vector<std::string> > &ans, const std::vector<std::vector<std::string> > &resp, std::string &result, std::string copy, int rand_idx)
-{
-	std::vector<std::vector<std::string> >::const_iterator ans_start, ans_end = ans.end();
-	std::vector<std::vector<std::string> >::const_iterator resp_start, resp_end = resp.end();
+// void Robot::generate_all(const std::vector<std::vector<std::string> > &ans, const std::vector<std::vector<std::string> > &resp, std::string &result, std::string copy, int rand_idx)
+// {
+// 	std::vector<std::vector<std::string> >::const_iterator ans_start, ans_end = ans.end();
+// 	std::vector<std::vector<std::string> >::const_iterator resp_start, resp_end = resp.end();
 
-	for ( ans_start = ans.begin(), resp_start = resp.begin(); ans_start < ans_end; ++ans_start, ++resp_start )
-	{
-		generate(*resp_start, *resp_end, result,copy, rand_idx);
-	}
-}
+// 	for ( ans_start = ans.begin(), resp_start = resp.begin(); ans_start < ans_end; ++ans_start, ++resp_start )
+// 	{
+// 		generate(*resp_start, *resp_end, result,copy, rand_idx);
+// 	}
+// }
 
 
 // If the user wants to use commands using
 // the terminal command prompt the
 // terminal_response() function will be called.
-void Robot::terminal_response(const std::string &response, std::string &result)
+void Robot::terminal_response(const std::string &response, std::string &result, uint8_t &flag)
 {
-	uint8_t flag = 0;
 	// Application Management
 	std::unordered_map< std::string, const char*> application_map = {
 		{ 	"chrome", "start chrome" },
@@ -171,30 +170,31 @@ void Robot::terminal_response(const std::string &response, std::string &result)
 
 	// Checks if the maps contain a key which is
 	// also contained in the response.
-	for (auto it: application_map)
+	
+	for ( auto const &it : application_map )
 	{
 		if (response.find(it.first) != std::string::npos)
 		{
 			if (flag == 0)
 			{
 				std::system(it.second);
-				flag = 1;
+				flag++;
+				result = "Process executed = '" + static_cast<std::string > (it.second) + "'";
 			}
-			//result = "Process executed = '" + static_cast<std::string > (it.second) + "'";
 			break;
 		}
 	}
 
-	for (auto it: file_map)
+	for ( auto const &it: file_map )
 	{
 		if (response.find(it.first) != std::string::npos)
 		{
 			if (flag == 0)
 			{
 				std::system(it.second);
-				flag = 1;
+				flag++;
+				result = "Process executed = '" + static_cast<std::string > (it.second) + "'";
 			}
-			//result = "Process executed = '" + static_cast<std::string > (it.second) + "'";
 			break;
 		}
 	}
@@ -208,6 +208,8 @@ std::string Robot::evaluate_response(const std::string &response, const User &us
 	{
 		// Generating a Random Number
 		int rand_idx;
+		uint8_t flag = 0;
+
 		srand(time(NULL));
 
 		// General Answers
@@ -244,7 +246,7 @@ std::string Robot::evaluate_response(const std::string &response, const User &us
 		this->generate(compliment_answer, compliment_responses, result, copy, rand_idx);
 
 		this->setting_response(result, copy);
-		this->terminal_response(response, result);
+		this->terminal_response(response, result, flag);
 		this->root_response(response, copy, usr);
 
 		return result;

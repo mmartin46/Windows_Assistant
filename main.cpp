@@ -58,8 +58,6 @@ int main()
 		ai.set_turn(1);
 		
 		response = usr->send_request();
-		std::cout << ai.evaluate_response(response, *usr) << std::endl;
-
 		// DEBUG: Executes a request 3 times.
 		switch(str_hash(ai.evaluate_response(response, *usr)))
 		{
@@ -87,7 +85,7 @@ int main()
 				login(*usr, usrn, pssc);
 				break;
 			default:
-				ai.evaluate_response(response, *usr);
+				std::cout << ai.evaluate_response(response, *usr) << std::endl;
 		}
 
 
