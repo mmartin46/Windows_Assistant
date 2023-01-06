@@ -34,6 +34,7 @@ class User
 
       virtual void set_username(const std::string &);
       virtual void set_password(const std::string &);
+      virtual void logout_call();
       std::string get_username() const;
       std::string get_password() const;
       uint8_t is_root() const;
@@ -42,6 +43,13 @@ class User
       void set_turn(uint8_t);
       uint8_t get_turn() const;
 };
+
+// Logout of the account.
+void User::logout_call()
+{
+   acc_init = 0;
+   std::cout << "Logging out of account '" + auth.first + "'..." << std::endl;
+}
 
 // Is the user a root user or not.
 uint8_t User::is_root() const
@@ -149,7 +157,7 @@ uint8_t User::get_turn() const
 // Destroys the user
 User::~User()
 {
-   std::cout << "Logging out of account '" + auth.first + "'..." << std::endl;
+   this->logout_call();
 }
 
 

@@ -81,6 +81,7 @@ int main()
 				break;
 			case 63:
 				ai.evaluate_response(response, *usr, 0);
+				usr->logout_call();
 				static_cast<RootUser*> (usr)->remove_root();
 				login(*usr, usrn, pssc);
 				break;
