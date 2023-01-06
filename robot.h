@@ -31,10 +31,10 @@ class Robot
 	   void printGreeting();
 	   bool check_greeting() const;
 
-	   void root_response(const std::string &, std::string &, const User &);
+	   void root_response(const std::string &, std::string &, const User &, int);
 
 	   void generate(const std::vector<std::string > &, const std::vector<std::string > &, std::string &, std::string, int);
-		void generate_all(const std::vector<std::vector<std::string> > &, const std::vector<std::vector<std::string> > &, std::string &, std::string, int);
+		//void generate_all(const std::vector<std::vector<std::string> > &, const std::vector<std::vector<std::string> > &, std::string &, std::string, int);
 
 	   void terminal_response(const std::string &, std::string &, int);
 	   void setting_response(std::string &, std::string &);
@@ -43,26 +43,29 @@ class Robot
 };
 
 // Responses only accessable by the root.
-void Robot::root_response(const std::string &resp, std::string &result, const User &usr)
+void Robot::root_response(const std::string &resp, std::string &result, const User &usr, int flag)
 {
-	if (usr.is_root())
+	if (flag == 0)
 	{
-		std::unordered_map<std::string, std::string > root_resp = {
-		   { 	"drivers", "driverquery" },
-			{ 	"system", "systeminfo" },
-			{ 	"account", "wmic useraccount" },
-         {  "mac", "getmac" }
-		};
-
-		// Checks if the maps contain a key which is
-		// also contained in the response.
-		for (auto it: root_resp)
+		if (usr.is_root())
 		{
-			if (resp.find(it.first) != std::string::npos)
+			std::unordered_map<std::string, std::string > root_resp = {
+				{ 	"drivers", "driverquery" },
+				{ 	"system", "systeminfo" },
+				{ 	"account", "wmic useraccount" },
+				{  "mac", "getmac" }
+			};
+
+			// Checks if the maps contain a key which is
+			// also contained in the response.
+			for (auto it: root_resp)
 			{
-				std::system(it.second.c_str());
-				result = "Command Called";
-				break;
+				if (resp.find(it.first) != std::string::npos)
+				{
+					std::system(it.second.c_str());
+					result = "\n";
+					break;
+				}
 			}
 		}
 	}
@@ -177,7 +180,7 @@ void Robot::terminal_response(const std::string &response, std::string &result, 
 			if (response.find(it.first) != std::string::npos)
 			{
 				std::system(it.second);
-				result = "Command Called";
+				result = "\n";
 				break;
 			}
 		}
@@ -187,7 +190,7 @@ void Robot::terminal_response(const std::string &response, std::string &result, 
 			if (response.find(it.first) != std::string::npos)
 			{
 				std::system(it.second);
-				result = "Command Called";
+				result = "\n";
 				break;
 			}
 		}
@@ -240,7 +243,7 @@ std::string Robot::evaluate_response(const std::string &response, const User &us
 
 		this->setting_response(result, copy);
 		this->terminal_response(response, result, flag);
-		this->root_response(response, copy, usr);
+		this->root_response(response, copy, usr, flag);
 
 		return result;
 	}

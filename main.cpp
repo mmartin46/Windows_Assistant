@@ -85,7 +85,7 @@ int main()
 				login(*usr, usrn, pssc);
 				break;
 			default:
-			if (ai.evaluate_response(response, *usr, 1) != "Command Called")
+			if (ai.evaluate_response(response, *usr, 1) != "\n")
 				std::cout << ai.evaluate_response(response, *usr, 0) << std::endl;
 		}
 
