@@ -58,7 +58,7 @@ int main()
 		ai.set_turn(1);
 		
 		response = usr->send_request();
-		// DEBUG: Executes a request 3 times.
+		// DEBUG: Executes a request 2 times.
 		switch(str_hash(ai.evaluate_response(response, *usr)))
 		{
 			case 27:
