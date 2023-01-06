@@ -11,9 +11,9 @@ unsigned int str_hash(std::string str)
     int hC = 0;
 	for (int i = 0; i < str.length(); ++i)
     {
-        hC += static_cast<int>(str[i]) % 10;
+        hC += static_cast<int>(str[i]) % 20;
     }
-    return hC;
+    return (hC << 1);
 }
 
 // Allows the user to login
@@ -61,7 +61,7 @@ int main()
 		// DEBUG: Executes a request 2 times.
 		switch(str_hash(ai.evaluate_response(response, *usr, 1)))
 		{
-			case 27:
+			case 194:
 				ai.evaluate_response(response, *usr, 0);
 				if (!usr->is_root())
 				{
@@ -75,11 +75,11 @@ int main()
 					std::cout << "You are already a root user." << std::endl;
 				}
 				break;
-			case 104:
+			case 468:
 				ai.evaluate_response(response, *usr, 0);
 				game->set_status(0);
 				break;
-			case 63:
+			case 266:
 				ai.evaluate_response(response, *usr, 0);
 				usr->logout_call();
 				static_cast<RootUser*> (usr)->remove_root();
