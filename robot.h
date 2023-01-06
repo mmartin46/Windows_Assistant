@@ -158,7 +158,8 @@ void Robot::terminal_response(const std::string &response, std::string &result, 
 			{ 	"calculator", "calc" },
 			{ 	"calendar", "cal" },
 			{ 	"date", "cal" },
-			{ 	"green", "color 2" }
+			{ 	"green", "color 2" },
+			{  "google", "explorer \"https://google.com\""}
 		};
 
 	// File Management
