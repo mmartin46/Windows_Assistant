@@ -18,8 +18,8 @@ class Robot
 	   // General Responses
 	   std::vector<std::string > positive_responses = { "Nice.", "Cool.", "Awesome!", "Great!", "Neat!" };
       std::vector<std::string > negative_responses = { "Hopefully it gets better.", "That's not good", "Uh oh.", "Maybe go outside?", "That's a shame." };
-		
-		
+
+
 		// Compliment Responses
       std::vector<std::string > compliment_responses = { "Appreciate it!", "No problem!", "Thank you!", "Don't mention it.", "My duty!" };
 	   // Settings
@@ -155,8 +155,12 @@ void Robot::terminal_response(const std::string &response, std::string &result, 
 {
 	// Application Management
 	std::unordered_map< std::string, const char*> application_map = {
-		{ 	"chrome", "start chrome" },
-			{ 	"edge", "start msedge" },
+		{ 	"open chrome", "start chrome" },
+		{   "start chrome", "start chrome" },
+		{  "kill chrome", "taskkill /F /IM chrome.exe /T" },
+		{  "stop chrome", "taskkill /F /IM chrome.exe /T" },
+        {  "close chrome", "taskkill /F /IM chrome.exe /T" },
+			{ 	"open edge", "start msedge" },
 			{ 	"task", "taskmgr" },
 			{ 	"explore", "explorer" },
 			{ 	"calculator", "calc" },
@@ -179,7 +183,7 @@ void Robot::terminal_response(const std::string &response, std::string &result, 
 	// Checks if the maps contain a key which is
 	// also contained in the response.
 	if (!flag)
-	{	
+	{
 		for ( auto const &it : application_map )
 		{
 			if (response.find(it.first) != std::string::npos)
